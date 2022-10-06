@@ -10,9 +10,36 @@ Pull requests are welcome.
 
 Run `yarn install` to install all the required dependencies and then execute the index.js file with node like in the following example.
 
+
+### Web Server
+Start web server:
+
+```
+node server.js
+```
+
+HTTP Request to get a screenshot from a webpage with curl:
+
+```
+curl -X POST "http://localhost:3000/screenshot/" -H 'content-type: application/json' -d '{"url": "https://alien.de/"}' -o img.webp
+```
+
+After the execution, there will a picture file named "img.webp" in your folder.
+
+It is a POST request with the json parameter in the body.
+
+Stop Server with ctrl-c or
+
+```
+curl "http://localhost:3000/screenshot/stop"
+```
+
+
+### Without web Server, just make a screenshot.
 ```
 node index.js https://github.com
 ```
+
 
 ### Docker
 
@@ -21,27 +48,30 @@ You can either build your own Docker image or you can use the pre-built one `nev
 Build the Docker image:
 
 ```
-docker build -t chrome-headless-screenshots .
+docker build -t screenshot_server .
 ```
 
 To take a screenshot with a Docker container run:
 
 ```
-docker run -it -v $(pwd):/usr/src/app/out --rm nevermendel/chrome-headless-screenshots https://github.com
+docker run -it -v $(pwd):/usr/src/app/out -p 3000:3000 --rm screenshot_server
 ```
 
-To use the image iteratively, change the entry point to /bin/sh:
+Stop mit CTRL-c oder mit
 
 ```
-docker run -it --entrypoint=/bin/sh -v $(pwd):/usr/src/app/out --rm nevermendel/chrome-headless-screenshots
+docker container ls | grep screenshot_server  
 ```
 
-When using the image iteratively you can run `take-screenshot.sh` from anywhere to call the `index.js` script. 
+```
+docker container stop <id> 
+```
 
-## Script usage
+
+## Script usage (Without Webserver)
 
 ```
-index.js [options] <url>
+node index.js [options] <url>
 
 Take a screenshot of a webpage
 
