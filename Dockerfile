@@ -29,5 +29,7 @@ RUN chmod +x take-screenshot.sh
 RUN chmod +x entrypoint.sh
 
 ENV PATH="/usr/src/app:${PATH}"
+EXPOSE 3000
 
-ENTRYPOINT ["entrypoint.sh"]
+CMD [ "node", "server.js" ]
+#ENTRYPOINT ["entrypoint.sh"]
