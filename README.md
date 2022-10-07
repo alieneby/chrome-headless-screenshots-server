@@ -21,12 +21,10 @@ node server.js
 HTTP Request to get a screenshot from a webpage with curl:
 
 ```
-curl -X POST "http://localhost:3000/screenshot/" -H 'content-type: application/json' -d '{"url": "https://alien.de/"}' -o img.webp
+curl "http://localhost:3000/?url=https%3A%2F%2Fhypnose54321.de%2F&format=webp&width=1024&height=600" -o img.webp
 ```
 
 After the execution, there will a picture file named "img.webp" in your folder.
-
-It is a POST request with the json parameter in the body.
 
 Stop Server with ctrl-c or
 

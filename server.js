@@ -36,7 +36,7 @@ function isIntBetween(str, min, max) {
     return i==str && i>=min && i<=max ? i : false;
 }
 
-app.get('/screenshot', async (req, res) => {
+app.get('/', async (req, res) => {
     console.log('http params ', req.query);
     let query = req.query || {};
     let basename = query.url || 'noBaseName';
