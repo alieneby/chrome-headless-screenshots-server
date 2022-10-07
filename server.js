@@ -28,27 +28,39 @@ app.get('/screenshot/stop', async (req, res) => {
     shutDown();
 });
 
+function isIntBetween(str, min, max) {
+    if ( ! str ) {
+        return false;
+    }
+    let i = parseInt(str);
+    return i==str && i>=min && i<=max ? i : false;
+}
 
-app.post('/screenshot/', async (req, res) => {
-    console.log('body', req.body);
-
-    let basename = req.body?.url || '';
+app.get('/screenshot', async (req, res) => {
+    console.log('http params ', req.query);
+    let query = req.query || {};
+    let basename = query.url || 'noBaseName';
+    let width = isIntBetween(query.width, 0, 4000) || 1920;
+    let height = isIntBetween(query.height, 0, 4000) || 1080;
+    let format = ['webp','png','jpeg'].includes(query.format) ? query.format: 'webp';
 
     basename = basename.replace('https://', '')
         .replace('http://', '')
         .replace(/[^a-zA-Z0-9_-]/g, '');
+
     console.log('basename', basename);
+
     await takeScreenshot({
-        width: 1920,
-        height: 1080,
+        width: width,
+        height: height,
         delay: 4000,
         outputDir: directory,
         filename: basename,
-        format: 'webp',
-        url: req.body.url
+        format: format,
+        url: query.url
     });
 
-    let absImg = __dirname + '/' + directory + '/' + basename + '.webp';
+    let absImg = __dirname + '/' + directory + '/' + basename + '.' + format;
     console.log('Image saved ', absImg)
     console.log('Send ', absImg)
     //res.send('Hello World!!!')
@@ -72,7 +84,7 @@ let server = app.listen(port, () => {
 
 
 async function takeScreenshot(argv) {
-    //console.log("takeScreenshot ", argv)
+    console.log("takeScreenshot ", argv)
 
     //console.log(`takeScreenshot lunch browser`)
     const browser = await puppeteer.launch({
