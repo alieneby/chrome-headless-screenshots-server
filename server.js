@@ -28,20 +28,13 @@ app.get('/screenshot/stop', async (req, res) => {
     shutDown();
 });
 
-function isIntBetween(str, min, max) {
-    if ( ! str ) {
-        return false;
-    }
-    let i = parseInt(str);
-    return i==str && i>=min && i<=max ? i : false;
-}
-
 app.get('/', async (req, res) => {
     console.log('http params ', req.query);
     let query = req.query || {};
     let basename = query.url || 'noBaseName';
     let width = isIntBetween(query.width, 0, 4000) || 1920;
     let height = isIntBetween(query.height, 0, 4000) || 1080;
+    let delay = isIntBetween(query.delay, 0, 10000) || 4000; // milliseconds
     let format = ['webp','png','jpeg'].includes(query.format) ? query.format: 'webp';
 
     basename = basename.replace('https://', '')
@@ -53,7 +46,7 @@ app.get('/', async (req, res) => {
     await takeScreenshot({
         width: width,
         height: height,
-        delay: 4000,
+        delay: delay,
         outputDir: directory,
         filename: basename,
         format: format,
@@ -81,6 +74,14 @@ let server = app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
 
+
+function isIntBetween(str, min, max) {
+    if ( ! str ) {
+        return false;
+    }
+    let i = parseInt(str);
+    return i==str && i>=min && i<=max ? i : false;
+}
 
 
 async function takeScreenshot(argv) {
