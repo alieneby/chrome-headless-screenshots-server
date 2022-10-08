@@ -12,7 +12,14 @@ Pull requests are welcome.
 
 ### Node.js
 
-Run `yarn install` to install all the required dependencies and then execute the index.js file with node like in the following example.
+Run `yarn install` 
+
+or 
+
+`npm install` 
+
+to install all the required dependencies.
+
 
 
 ### Web Server
