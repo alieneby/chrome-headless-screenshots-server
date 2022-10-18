@@ -40,11 +40,29 @@ async function heisePlainText(argv) {
     page.on('console', msg => console.log(msg.text()));
 
     let txt = await page.evaluate(_ => {
-        console.log('page.evaluate() started');
+        console.log('page.evaluate() started ' );
+        if ( ! document ) {
+            console.log('page.evaluate() no document!!!!! ' );
+        }
+        
+        if ( ! document.querySelector("div.article-content") ) {
+            console.log('page.evaluate() no document.querySelector(div.article-content)!!!!!');
+            console.log( document.innerText );
+            return "";
+        }
+
         document.querySelector("div.article-content")
                 .querySelectorAll('[instant],[data-collapse-content],figcaption')
                 .forEach(x=>{ console.log(x.innerText); x.remove()});
-        console.log('page.evaluate() add removed'); 
+        console.log('page.evaluate() add removed');
+        
+        // Lesen sie auch
+        document.querySelectorAll('[data-component="RecommendationBox"]')
+            .forEach(x=>{ console.log(x.innerText); x.remove()});
+
+        document.querySelectorAll('footer')
+            .forEach(x=>{ console.log(x.innerText); x.remove()});
+            
         let txt = document.querySelector("div.article-content").innerText; 
         txt = txt.replace(/Kommentare lesen.*/gm,'');
         txt = txt.replace(/\(This article is also available in english\)/gm,''); 
@@ -57,7 +75,7 @@ async function heisePlainText(argv) {
         return txt;
     });
 
-    console.log('browser.txt ', txt);
+    console.log('browser.txt: ', txt);
 
     //console.log(`takeScreenshot close browser`)
     await browser.close();
