@@ -1,6 +1,7 @@
 const {port} = require('./config.js');
 const {screenshot} = require('./modules/screenshot');
 const {heise} = require('./modules/heise');
+const {terraMysticaFeed} = require('./modules/terraMystica');
 const {clearImageFolder} = require('./modules/clearImageFolder');
 const {listenOnKeyControlC} = require('./modules/controlC');
 
@@ -18,11 +19,13 @@ app.get('/screenshot/stop', async (req, res) => {
 
 app.get('/', screenshot)
 app.get('/heise', heise);
+app.get('/terraMystica', terraMysticaFeed);
+
 
 
 let server = app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+    console.log( `Example app listening on port ${port}` )
 })
 
 // ======================= shutdown
-listenOnKeyControlC(process, server);
+listenOnKeyControlC( process, server );
