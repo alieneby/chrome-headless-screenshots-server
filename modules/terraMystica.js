@@ -60,13 +60,26 @@ let scanPage= _ => {
 
 const terraMysticaFeed = async (req, res) => {
     try {        
-        let query = req.query || {};
-        let url = query?.url ? query.url : "https://terra-mystica.jimdofree.com/";
-        let evalFunction = query?.url ? scanPage : scannFeed;
         let txt = await runBrowser({
             delay: 2,
-            url: url,
-            evalFunction: evalFunction
+            url: "https://terra-mystica.jimdofree.com/",
+            evalFunction: scanFeed
+        });        
+        res.send(txt);
+    
+    } catch ( e ) {        
+        res.send( "Exception: " + e);
+        console.log('heise ', e);
+    }
+}
+
+const terraMysticaText = async (req, res) => {
+    try {        
+        let query = req.query || {};
+        let txt = await runBrowser({
+            delay: 2,
+            url: query?.url,
+            evalFunction: scanPage
         });        
         res.send(txt);
     
@@ -77,4 +90,7 @@ const terraMysticaFeed = async (req, res) => {
 }
 
 
-module.exports = { terraMysticaFeed }
+module.exports = { 
+    "terraMysticaFeed": terraMysticaFeed, 
+    "terraMysticaText": terraMysticaText
+}
