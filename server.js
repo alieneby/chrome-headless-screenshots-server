@@ -1,7 +1,7 @@
 const {port} = require('./config.js');
 const {screenshot} = require('./modules/screenshot');
 const {heise} = require('./modules/heise');
-const {terraMysticaFeed, terraMysticaText} = require('./modules/terraMystica');
+const {terraMystica} = require('./modules/terraMystica');
 const {clearImageFolder} = require('./modules/clearImageFolder');
 const {listenOnKeyControlC} = require('./modules/controlC');
 
@@ -19,8 +19,7 @@ app.get('/screenshot/stop', async (req, res) => {
 
 app.get('/', screenshot)
 app.get('/heise', heise);
-app.get('/terraMystica', terraMysticaFeed);
-app.get('/terraMysticaText', terraMysticaText);
+app.get('/terraMystica', terraMystica);
 
 
 

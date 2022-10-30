@@ -2,13 +2,14 @@ const delay = require('delay');
 const puppeteer = require('puppeteer');
 
 async function runBrowser( argv ) {
-    console.log("feed terraMystica ", argv)
+    console.log("module runBrowser.js ", argv)
 
     const browser = await puppeteer.launch({
         defaultViewport: {
             width: 300,
             height: 500,
         },
+        dumpio: true, // console.log works within page.evaluate()
         bindAddress: '0.0.0.0',
         args: [
             '--no-sandbox',
@@ -33,9 +34,10 @@ async function runBrowser( argv ) {
     }
     //if (argv.delay) await delay(argv.delay);
 
-    page.on('console', msg => console.log(msg.text()));
+    //page.on('console.log', msg => console.log(msg.text()));
 
-    let txt = await page.evaluate( argv.evalFunction );
+    
+    let txt = await page.evaluate( argv.evalFunction);
 
     console.log('browser.txt: ', txt);
 

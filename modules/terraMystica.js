@@ -88,9 +88,11 @@ const terraMysticaText = async (req, res) => {
         console.log('heise ', e);
     }
 }
-
+const terraMystica= async (req, res) => {
+        let query = req.query || {};
+        return query?.url ? (terraMysticaText)(req, res)  : (terraMysticaFeed)(req, res) 
+    }
 
 module.exports = { 
-    "terraMysticaFeed": terraMysticaFeed, 
-    "terraMysticaText": terraMysticaText
+    "terraMystica": terraMystica
 }
