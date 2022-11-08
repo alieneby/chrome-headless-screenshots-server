@@ -3,6 +3,7 @@ const {screenshot} = require('./modules/screenshot');
 const {heise} = require('./modules/heise');
 const {terraMystica} = require('./modules/terraMystica');
 const {clearImageFolder} = require('./modules/clearImageFolder');
+const {youtubeSubtitles} = require('./modules/youtubeSubtitles');
 const {listenOnKeyControlC} = require('./modules/controlC');
 
 const express = require('express')
@@ -20,7 +21,7 @@ app.get('/screenshot/stop', async (req, res) => {
 app.get('/', screenshot)
 app.get('/heise', heise);
 app.get('/terraMystica', terraMystica);
-
+app.get('/youtubeSubtitles', youtubeSubtitles);
 
 
 let server = app.listen(port, () => {
