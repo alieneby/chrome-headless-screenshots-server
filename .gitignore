@@ -120,3 +120,4 @@ dist
 #IDE folder
 .idea
 .code
+package-lock.json
