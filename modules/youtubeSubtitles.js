@@ -25,6 +25,20 @@ const exampleResponse = [{
 ];
 */
 
+function objToTxt( obj ) {
+    if ( ! obj || ! obj?.length) {
+        console.error("subtitles objToTxt() ERROR: no obj or obj.length");
+        return "";
+    }
+    let txt = "";
+    obj.forEach(element => {
+        txt += " " + element?.text?.trim(); 
+    });
+    txt = txt.replace('\t'," ").replace(".", ".\n").trim();
+    console.log( 'objToTxt() ', txt);
+    return txt;
+}
+
 const youtubeSubtitles = async (req, res) => {
     let query = req.query || {};
     let id = query?.id || '';
@@ -38,14 +52,16 @@ const youtubeSubtitles = async (req, res) => {
     }
 
     if ( id == '0dDhjYp6MG8' ) { // UAMN EN Example
-        console.log( 'youtubeSubtitles() EN simulation ', exampleEn);
-        res.send( JSON.stringify( exampleEn ) );
+        let txt = objToTxt( exampleEn );
+        console.log( 'youtubeSubtitles() EN simulation');
+        res.send( txt );
         return;
     }
 
     if ( id == '2f_aT2XnB_s' ) { // LPIndie DE Example
-        console.log( 'youtubeSubtitles() DE simulation ', exampleDe);
-        res.send( JSON.stringify( exampleDe ) );
+        let txt = objToTxt( exampleDe );        
+        console.log( 'youtubeSubtitles() DE simulation ');
+        res.send( txt );
         return;
     }
 
@@ -55,13 +71,8 @@ const youtubeSubtitles = async (req, res) => {
             lang: lang // default: `en`
 
         }).then(function(captions) {
-            console.log(captions);
-            let txt = "";
-            captions.forEach(element => {
-                txt += " " + element?.text?.trim(); 
-            });
-            
-            res.send(txt.replace('\t'," ").replace(".", ".\n") );
+            let txt = objToTxt( captions );
+            res.send(txt);
             return;
         });
 
@@ -77,13 +88,8 @@ const youtubeSubtitles = async (req, res) => {
                 videoID: id, // youtube video id
                 lang: 'en' // default: `en`
               }).then(function(captions) {
-                console.log(captions);
-                let txt = "";
-                captions.forEach(element => {
-                    txt += " " + element?.text?.trim(); 
-                });
-                
-                res.send(txt.replace('\t'," ").replace(".", ".\n") );
+                let txt = objToTxt( captions );
+                res.send(txt);
                 return;
               });
     
