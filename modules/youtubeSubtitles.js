@@ -43,7 +43,9 @@ const youtubeSubtitles = async (req, res) => {
     let query = req.query || {};
     let id = query?.id || '';
     let lang = query?.lang || 'de';
-
+    console.log( '');
+    console.log( '================================ START ===========' );
+    console.log( '');
     console.log( 'youtubeSubtitles() id: ', id, ', lang: ', lang);
 
     if ( ! id ) {
@@ -79,7 +81,7 @@ const youtubeSubtitles = async (req, res) => {
     } catch ( e ) {
         console.error("ERROR1: YoutubeId: " + id + ", language: " + lang + " subtitle issues: " + e );
         if ( lang == 'en' ) {
-            res.send("");
+            res.send( "" );
             return;
         }
 
