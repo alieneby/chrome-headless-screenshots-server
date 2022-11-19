@@ -1,6 +1,8 @@
 const delay = require('delay');
 const puppeteer = require('puppeteer');
 
+
+
 async function runBrowser( argv ) {
     console.log("module runBrowser.js ", argv)
 
@@ -29,11 +31,23 @@ async function runBrowser( argv ) {
         // @see https://stackoverflow.com/questions/62852714/pyppeteer-wait-until-all-elements-of-page-is-loaded
         await page.goto(argv.url, {waitUntil: 'domcontentloaded', timeout: 16000});
     } catch(e) {
-        log.error(e);
+        console.error('Exception page.goto() ', e);
         return '';
     }
-    //if (argv.delay) await delay(argv.delay);
 
+    if (argv.delay) {       
+        let delaySec = argv.delay < 1000 ? argv.delay : argv.delay / 1000; 
+        console.log('');
+        console.log('wait ' + delaySec + ' seconds');
+        await delay(delaySec * 1000);
+        console.log('wait done');
+    }
+
+    if (argv.jsString) {       
+        console.log('adding: ' + argv.jsString);
+        const resultArticle = await page.evaluate(argv.jsString);
+        console.log('result: ' + resultArticle);
+    }
     //page.on('console.log', msg => console.log(msg.text()));
 
     

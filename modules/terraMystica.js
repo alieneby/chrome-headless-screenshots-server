@@ -69,7 +69,7 @@ const terraMysticaFeed = async (req, res) => {
     
     } catch ( e ) {        
         res.send( "Exception: " + e);
-        console.log('heise ', e);
+        console.log('terraMystica ', e);
     }
 }
 
