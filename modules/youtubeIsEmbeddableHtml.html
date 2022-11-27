@@ -1,0 +1,135 @@
+<html>
+    <head>
+        <script charset="utf-8" type="text/javascript" src="http://www.youtube.com/player_api"></script>
+    </head>
+    <body>
+        SOURCE FROM:<br />
+        <ul>
+            <li>
+                <a href="https://developers.google.com/youtube/iframe_api_reference">
+                    https://developers.google.com/youtube/iframe_api_reference
+                </a>
+            </li>
+        </ul>
+
+        TESTS:
+        <ul>
+            <li>
+                <a href="http://localhost:3000/youtubeIsEmbeddableHtml?M7lc1UVf-VE">
+                    EMBEDDABLE
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:3000/youtubeIsEmbeddableHtml?QZCdmrP8ATg">
+                    NOT EMBEDDABLE
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:3000/youtubeIsEmbeddableHtml?QZCdmrP8">
+                    INVALID
+                </a>
+            </li>
+        </ul>
+
+
+        
+        
+        <br />
+
+        <input id="myInfo" value=""><br />
+
+        <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+        <div id="player"></div>
+        <pre id="extraInfos">
+        </pre>
+
+        <script>
+            let url = document.location.href;
+            let hashPos = url.indexOf('?');
+                        
+            document.ytId = hashPos < 0 ? '' :  url.substr( hashPos+1 );
+
+
+            // 2. This code loads the IFrame Player API code asynchronously.
+            var tag = document.createElement('script');
+        
+            tag.src = "https://www.youtube.com/iframe_api";
+            var firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        
+            // 3. This function creates an <iframe> (and YouTube player)
+            //    after the API code downloads.
+            var player;
+            function onYouTubeIframeAPIReady() {
+                document.player = new YT.Player('player', {
+                    height: '360',
+                    width: '640',
+                    //videoId: 'M7lc1UVf-VE', //EMBEDDABLE
+                    //videoId: 'QZCdmrP8ATg', //NOT EMBEDDABLE
+                    //videoId: 'QZCdmrP8', //INVALID
+                    videoId: document.ytId,
+                    events: {
+                        'onReady': onPlayerReady,
+                        'onStateChange': onPlayerStateChange,
+                        'onError': onPlayerError
+                    }
+                });
+            }
+        
+            // 4. The API will call this function when the video player is ready.
+            function onPlayerReady(event) {
+                console.log('onPlayerReady Event: ', event);
+                if (document.player.getDuration() === 0) {
+                    return setMyInfo( "INVALID " + document.ytId, 1 );
+                }
+                
+
+                let d = event.target?.getVideoData() || null;
+                console.log('onPlayerReady VideoData: ', d);
+                
+                document.getElementById('extraInfos').innerHTML 
+                    = "title: " +  d.title + "<br />"
+                    + "video_id: " +  d.video_id + "<br />"
+                    + "isPlayable: " +  d.isPlayable + "<br />"
+                    + "errorCode: " +  d.errorCode + "<br />"
+                    ;
+                return setMyInfo( "EMBEDDABLE " + document.ytId, 1 );
+            }
+
+        
+            // 5. The API calls this function when the player's state changes.
+            //    The function indicates that when playing a video (state=1),
+            //    the player should play for six seconds and then stop.
+            var done = false;
+            function onPlayerStateChange(event) {
+                console.log("onStateChange");
+                console.log(event);                
+            }
+
+            function onPlayerError(event) {
+                console.error("onPlayerError");
+                console.error(event);
+
+                // Der Rechteinhaber des angeforderten Videos untersagt 
+                // die Wiedergabe des Videos in eingebetteten Playern.
+                if ( event.data == 101 || event.data == 150 ) {
+                    return setMyInfo( "NOT EMBEDDABLE " + document.ytId, 0 );
+                }                
+            }
+
+            function setMyInfo( myInfo, isLowPrioMsg ) {
+                console.log(myInfo);
+                let inputObj = document.getElementById('myInfo');
+                if ( isLowPrioMsg && inputObj.value != '') 
+                {
+                    return;
+                }
+                inputObj.value=myInfo;                
+            }
+
+        </script>
+        
+
+        
+    </body>
+</html>
