@@ -25,14 +25,18 @@ const exampleResponse = [{
 ];
 */
 
-function objToTxt( obj ) {
+function objToTxt( obj, startSecond ) {
     if ( ! obj || ! obj?.length) {
         console.error("subtitles objToTxt() ERROR: no obj or obj.length");
         return "";
     }
+    startSecond = 0+startSecond || 0;
     let txt = "";
     obj.forEach(element => {
-        txt += " " + element?.text?.trim(); 
+        let second = element.start ? Math.floor(element.start) : 0;
+        if (second>=startSecond) {
+            txt += " " + element?.text?.trim(); 
+        }
     });
     txt = txt.replace('\t'," ").replace(".", ".\n").trim();
     console.log( 'objToTxt() ', txt);
@@ -43,10 +47,11 @@ const youtubeSubtitles = async (req, res) => {
     let query = req.query || {};
     let id = query?.id || '';
     let lang = query?.lang || 'de';
+    let startSecond = query?.s || 0;
     console.log( '');
     console.log( '================================ START ===========' );
     console.log( '');
-    console.log( 'youtubeSubtitles() id: ', id, ', lang: ', lang);
+    console.log( 'youtubeSubtitles() id: ', id, ', lang: ', lang, ', Seconds: ', startSecond);
 
     if ( ! id ) {
         res.send("");
@@ -54,14 +59,14 @@ const youtubeSubtitles = async (req, res) => {
     }
 
     if ( id == '0dDhjYp6MG8' ) { // UAMN EN Example
-        let txt = objToTxt( exampleEn );
+        let txt = objToTxt( exampleEn, startSecond );
         console.log( 'youtubeSubtitles() EN simulation');
         res.send( txt );
         return;
     }
 
     if ( id == '2f_aT2XnB_s' ) { // LPIndie DE Example
-        let txt = objToTxt( exampleDe );        
+        let txt = objToTxt( exampleDe, startSecond );        
         console.log( 'youtubeSubtitles() DE simulation ');
         res.send( txt );
         return;
@@ -73,7 +78,7 @@ const youtubeSubtitles = async (req, res) => {
             lang: lang // default: `en`
 
         }).then(function(captions) {
-            let txt = objToTxt( captions );
+            let txt = objToTxt( captions, startSecond );
             res.send(txt);
             return;
         });
@@ -90,7 +95,7 @@ const youtubeSubtitles = async (req, res) => {
                 videoID: id, // youtube video id
                 lang: 'en' // default: `en`
               }).then(function(captions) {
-                let txt = objToTxt( captions );
+                let txt = objToTxt( captions, startSecond );
                 res.send(txt);
                 return;
               });
