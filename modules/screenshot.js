@@ -12,7 +12,8 @@ const screenshot = async (req, res) => {
     let width = isIntBetween(query.width, 0, 4000) || 1920;
     let height = isIntBetween(query.height, 0, 4000) || 1080;
     let delay = isIntBetween(query.delay, 0, 10000) || 5000; // milliseconds
-    
+    let timeout = isIntBetween(query.timeout, 0, 10000) || 4000; // milliseconds
+    let waitUntil = query.waitUntil == 'networkidle0' ? 'networkidle0' : 'domcontentloaded';
     let format = ['webp','png','jpeg'].includes(query.format) ? query.format: 'webp';
 
     basename = basename.replace('https://', '')
@@ -28,6 +29,8 @@ const screenshot = async (req, res) => {
         outputDir: imgDirectory,
         filename: basename,
         format: format,
+        waitUntil: waitUntil,
+        timeout: timeout,
         url: query.url
     });
 
@@ -98,10 +101,29 @@ async function takeScreenshot(argv) {
         }
     }
 
-    //console.log(`takeScreenshot call url ${argv.url}`)
-    await page.goto(argv.url);
+    try {
+        // @see https://stackoverflow.com/questions/62852714/pyppeteer-wait-until-all-elements-of-page-is-loaded
+        
+        let gotoPageParams = { 
+            waitUntil:  argv.waitUntil, 
+            timeout:  argv.timeout,            
+        };
+        console.log('gotoPageParams: ', gotoPageParams);
 
-    if (argv.delay) await delay(argv.delay);
+        await page.goto(argv.url, gotoPageParams);
+
+    } catch(e) {
+        console.log('Exception page.goto() ', e);
+        return '';
+    }
+
+    if (argv.delay) {       
+        let delaySec = argv.delay < 1000 ? argv.delay : argv.delay / 1000; 
+        console.log('');
+        console.log('wait ' + delaySec + ' seconds');
+        await delay(delaySec * 1000);
+        console.log('wait done');
+    }
     
     //console.log(`takeScreenshot make screenshot ${argv.filename}.${argv.format}`)
     await page.screenshot({
