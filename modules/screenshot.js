@@ -44,7 +44,11 @@ const screenshot = async (req, res) => {
                 res.status(err.status).end();
             }
             console.log('Delete file ', absImg)
-            fs.unlinkSync(absImg);
+            try {
+                fs.unlinkSync(absImg);
+            } catch(e) {
+                console.log('Can not unlink/remove ', absImg);
+            }
         }
     );
 }
