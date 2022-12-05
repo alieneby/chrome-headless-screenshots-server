@@ -39,12 +39,12 @@ async function runBrowser( argv ) {
             : 4000;    
 
         let gotoParams = { waitUntil: waitUntil, timeout: timeout };
-        console.error('gotoParams: ', gotoParams);
+        console.log('gotoParams: ', gotoParams);
 
         await page.goto(argv.url, gotoParams);
 
     } catch(e) {
-        console.error('Exception page.goto() ', e);
+        console.log('Exception page.goto() ', e);
         return '';
     }
 
@@ -64,7 +64,13 @@ async function runBrowser( argv ) {
     //page.on('console.log', msg => console.log(msg.text()));
 
     
-    let txt = await page.evaluate( argv.evalFunction);
+    let txt = '';
+    try {
+        txt = await page.evaluate( argv.evalFunction);
+
+    } catch( e ) {
+        console.log('Exception: ', e);
+    }
 
     console.log('browser.txt: ', txt);
 
