@@ -31,8 +31,18 @@ async function runBrowser( argv ) {
         // @see https://stackoverflow.com/questions/62852714/pyppeteer-wait-until-all-elements-of-page-is-loaded
         let waitUntil 
             = argv.waitUntil == 'networkidle0' ? 'networkidle0' : 'domcontentloaded';
+        
+        
+        let timeout
+            = ( argv.timeout && Number.isInteger(argv.timeout) && argv.timeout < 60000 )  
+            ?  argv.timeout 
+            : 4000;    
 
-        await page.goto(argv.url, { waitUntil: waitUntil, timeout: 16000});
+        let gotoParams = { waitUntil: waitUntil, timeout: timeout };
+        console.error('gotoParams: ', gotoParams);
+
+        await page.goto(argv.url, gotoParams);
+
     } catch(e) {
         console.error('Exception page.goto() ', e);
         return '';
