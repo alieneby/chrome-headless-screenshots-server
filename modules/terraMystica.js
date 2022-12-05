@@ -34,6 +34,7 @@ let scanFeed = _ => {
 
 let scanPage= _ => {  
     console.log('page.evaluate() started ' );
+    return "";
     if ( ! document ) {
         console.log('page.evaluate() no document!!!!! ' );
     }
@@ -42,12 +43,19 @@ let scanPage= _ => {
 
     if ( ! contentDiv ) {
         console.log('page.evaluate() no document.querySelector(#content_area])!!!!!');
-        console.log( document.innerText );
+        console.log( document?.innerText || 'NO INNERTEXT!' );
         return "";
     }
 
+    console.log( 'contentDiv.querySelectorAll()' );
     // Buchwerbung entfernen
     contentDiv.querySelectorAll('div.j-hgrid, div.j-gallery, div.j-imageSubtitle,  div.j-hr').forEach( x => x.remove())
+
+    console.log( 'contentDiv.innerText()' );
+    if ( ! contentDiv || !  contentDiv.innerText ) {
+        console.log('page.evaluate() no contentDiv!!!!!');
+        return "";
+    }
 
     let txt = contentDiv.innerText
         .replaceAll("\n", ' ')
@@ -59,7 +67,9 @@ let scanPage= _ => {
 
 
 const terraMysticaFeed = async (req, res) => {
-    try {        
+    try {     
+        res.send("");
+        return;   
         let txt = await runBrowser({
             delay: 2,
             url: "https://terra-mystica.jimdofree.com/",

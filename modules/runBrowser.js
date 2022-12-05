@@ -29,7 +29,10 @@ async function runBrowser( argv ) {
 
     try {
         // @see https://stackoverflow.com/questions/62852714/pyppeteer-wait-until-all-elements-of-page-is-loaded
-        await page.goto(argv.url, {waitUntil: 'domcontentloaded', timeout: 16000});
+        let waitUntil 
+            = argv.waitUntil == 'networkidle0' ? 'networkidle0' : 'domcontentloaded';
+
+        await page.goto(argv.url, { waitUntil: waitUntil, timeout: 16000});
     } catch(e) {
         console.error('Exception page.goto() ', e);
         return '';

@@ -11,7 +11,8 @@ const screenshot = async (req, res) => {
     let basename = query.url || 'noBaseName';
     let width = isIntBetween(query.width, 0, 4000) || 1920;
     let height = isIntBetween(query.height, 0, 4000) || 1080;
-    let delay = isIntBetween(query.delay, 0, 10000) || 4000; // milliseconds
+    let delay = isIntBetween(query.delay, 0, 10000) || 5000; // milliseconds
+    
     let format = ['webp','png','jpeg'].includes(query.format) ? query.format: 'webp';
 
     basename = basename.replace('https://', '')
