@@ -43,6 +43,30 @@ Stop Server with ctrl-c or
 curl "http://localhost:3000/screenshot/stop"
 ```
 
+Optional: timeout 
+Default: 4000 milliseconds (4 seconds)
+Value: integer
+You can add the timeout in miliseconds to url:
+```
+curl "http://localhost:3000/?url=https%3A%2F%alien.de%2F&format=jpeg&width=300&height=300&timeout=6000" -o img.jpg
+```
+
+Optional: waitUntil
+Default: domcontentloaded
+Value: 'domcontentloaded' or 'networkidle0'
+Screenshot should be done when DOM content loaded or network is idle:
+```
+curl "http://localhost:3000/?url=https%3A%2F%alien.de%2F&format=jpeg&width=300&height=300&waitUntil=networkidle0" -o img.jpg
+```
+
+Optional: delay
+Default: 2000
+Value: integer 
+Milliseconds after waitUntil is called.
+Screenshot should be done after this delay:
+```
+curl "http://localhost:3000/?url=https%3A%2F%alien.de%2F&format=jpeg&width=300&height=300&waitUntil=networkidle0"&delay=3000" -o img.jpg
+```
 
 ### Without web Server, just make a screenshot.
 ```

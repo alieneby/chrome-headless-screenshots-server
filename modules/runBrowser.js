@@ -36,7 +36,7 @@ async function runBrowser( argv ) {
         let timeout
             = ( argv.timeout && Number.isInteger(argv.timeout) && argv.timeout < 60000 )  
             ?  argv.timeout 
-            : 4000;    
+            : 10000;    
 
         let gotoParams = { waitUntil: waitUntil, timeout: timeout };
         console.log('gotoParams: ', gotoParams);
@@ -66,7 +66,7 @@ async function runBrowser( argv ) {
     
     let txt = '';
     try {
-        txt = await page.evaluate( argv.evalFunction);
+        txt = await page.evaluate( argv.evalFunction );
 
     } catch( e ) {
         console.log('Exception: ', e);
