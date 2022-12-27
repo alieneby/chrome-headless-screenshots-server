@@ -30,6 +30,7 @@ app.get('/youtubeIsEmbeddable', youtubeIsEmbeddable);
 app.get('/youtubeIsEmbeddableHtml', youtubeIsEmbeddableHtml);
 app.get('/cropFm', cropFm);
 app.get('/readability', readability);
+app.get('/web', readability);
 
 
 let server = app.listen(port, () => {

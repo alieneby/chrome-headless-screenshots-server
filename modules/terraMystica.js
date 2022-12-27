@@ -8,6 +8,7 @@ let scanFeed = _ => {
     }
     
     let arrPA = document.querySelectorAll('p[style] > a[href]');
+    console.log('page.evaluate() 3 ' );
 
     if ( ! arrPA ) {
         console.log('page.evaluate() no document.querySelector(p[style] > a[href])!!!!!');
@@ -16,10 +17,13 @@ let scanFeed = _ => {
     }
 
     let arr = [];
+    console.log('page.evaluate() 5 ' );
 
     arrPA.forEach( node => {
+        console.log('page.evaluate() 6' );
 
-        let descr = node.parentElement.querySelector('span.hascaption').innerText;
+        let descr = node?.parentElement?.querySelector('span.hascaption')?.innerText || '';
+        console.log('page.evaluate() node ' + ( descr ? '': ' no ' ) + ' has article');
 
         arr.push({
             url: node.href,
@@ -34,7 +38,6 @@ let scanFeed = _ => {
 
 let scanPage= _ => {  
     console.log('page.evaluate() started ' );
-    return "";
     if ( ! document ) {
         console.log('page.evaluate() no document!!!!! ' );
     }
@@ -68,10 +71,8 @@ let scanPage= _ => {
 
 const terraMysticaFeed = async (req, res) => {
     try {     
-        res.send("");
-        return;   
         let txt = await runBrowser({
-            delay: 2,
+            delay: 3,
             url: "https://terra-mystica.jimdofree.com/",
             evalFunction: scanFeed
         });        
