@@ -94,9 +94,9 @@ async function takeScreenshot(argv) {
             height: argv.height,
         },
         bindAddress: '0.0.0.0',
+        headless: 'new',
         args: [
             '--no-sandbox',
-            '--headless',
             '--disable-gpu',
             '--disable-dev-shm-usage',
             '--remote-debugging-port=9222',

@@ -98,10 +98,10 @@ function takeScreenshot(argv) {
                 width: argv.width,
                 height: argv.height,
             },
+            headless: 'new',
             bindAddress: '0.0.0.0',
             args: [
-                '--no-sandbox',
-                '--headless',
+                '--no-sandbox',                
                 '--disable-gpu',
                 '--disable-dev-shm-usage',
                 '--remote-debugging-port=9222',

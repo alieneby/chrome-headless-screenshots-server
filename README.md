@@ -63,7 +63,7 @@ docker build -t screenshot_server .
 To take a screenshot with a Docker container run:
 
 ```
-docker run -it -v $(pwd):/usr/src/app/out -p 3000:3000 --rm screenshot_server
+docker run -it -v $(pwd):/usr/src/app/out --name screenshot_server -p 3000:3000 --rm screenshot_server
 ```
 
 Stop mit CTRL-c oder mit
