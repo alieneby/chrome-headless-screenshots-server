@@ -81,13 +81,13 @@ You can either build your own Docker image or you can use the pre-built one `nev
 Build the Docker image:
 
 ```
-docker build -t screenshot_server .
+docker build -t screenshot_server/20230516 .
 ```
 
 To take a screenshot with a Docker container run:
 
 ```
-docker run -it -v $(pwd):/usr/src/app/out -p 3000:3000 --rm screenshot_server
+docker run -it -v $(pwd):/usr/src/app/out  --name screenshot_server -p 3000:3000 --rm screenshot_server
 ```
 
 Stop mit CTRL-c oder mit

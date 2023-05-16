@@ -13,9 +13,9 @@ async function runBrowser( argv ) {
         },
         dumpio: true, // console.log works within page.evaluate()
         bindAddress: '0.0.0.0',
+        headless: 'new',
         args: [
             '--no-sandbox',
-            '--headless',
             '--disable-gpu',
             '--disable-dev-shm-usage',
             '--remote-debugging-port=9222',
@@ -36,7 +36,7 @@ async function runBrowser( argv ) {
         let timeout
             = ( argv.timeout && Number.isInteger(argv.timeout) && argv.timeout < 60000 )  
             ?  argv.timeout 
-            : 10000;    
+            : 10000;
 
         let gotoParams = { waitUntil: waitUntil, timeout: timeout };
         console.log('gotoParams: ', gotoParams);
