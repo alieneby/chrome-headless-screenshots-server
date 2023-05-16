@@ -3,6 +3,7 @@ const {screenshot} = require('./modules/screenshot');
 const {heise} = require('./modules/heise');
 const {terraMystica} = require('./modules/terraMystica');
 const {cropFm} = require('./modules/cropFm');
+const {metaTags} = require('./modules/metaTags');
 const {readability} = require('./modules/readability');
 const {clearImageFolder} = require('./modules/clearImageFolder');
 const {youtubeSubtitles} = require('./modules/youtubeSubtitles');
@@ -29,6 +30,7 @@ app.get('/youtubeSubtitles', youtubeSubtitles);
 app.get('/youtubeIsEmbeddable', youtubeIsEmbeddable);
 app.get('/youtubeIsEmbeddableHtml', youtubeIsEmbeddableHtml);
 app.get('/cropFm', cropFm);
+app.get('/metaTags', metaTags);
 app.get('/readability', readability);
 app.get('/web', readability);
 
