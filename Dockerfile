@@ -4,6 +4,8 @@ FROM alpine:3.18
 RUN apk add --no-cache \
       chromium \
       nss \
+      alsa-lib \
+      xdg-utils \
       freetype \
       harfbuzz \
       ca-certificates \
