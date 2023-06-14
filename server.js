@@ -8,6 +8,7 @@ const {readability} = require('./modules/readability');
 const {clearImageFolder} = require('./modules/clearImageFolder');
 const {youtubeSubtitles} = require('./modules/youtubeSubtitles');
 const {youtubeIsEmbeddable2023} = require('./modules/youtubeIsEmbeddable2023');
+const {youtubeScreenshot} = require('./modules/youtubeScreenshot');
 //const {youtubeIsEmbeddable} = require('./modules/youtubeIsEmbeddable');
 //const {youtubeIsEmbeddableHtml} = require('./modules/youtubeIsEmbeddableHtml');
 const {listenOnKeyControlC} = require('./modules/controlC');
@@ -24,7 +25,15 @@ app.get('/screenshot/stop', async (req, res) => {
     shutDown();
 });
 
-app.get('/', screenshot)
+app.get('/', async (req, res) => {
+    let url = req?.query?.url || '';
+    if ( url.indexOf( 'youtube' ) > 0 || url.indexOf( 'youtu.be' ) > 0 ) {
+        youtubeScreenshot(req, res);
+    } else {
+        screenshot(req, res);
+    }
+});
+
 app.get('/heise', heise);
 app.get('/terraMystica', terraMystica);
 app.get('/youtubeSubtitles', youtubeSubtitles);
