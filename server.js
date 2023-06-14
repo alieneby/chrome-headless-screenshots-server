@@ -7,8 +7,9 @@ const {metaTags} = require('./modules/metaTags');
 const {readability} = require('./modules/readability');
 const {clearImageFolder} = require('./modules/clearImageFolder');
 const {youtubeSubtitles} = require('./modules/youtubeSubtitles');
-const {youtubeIsEmbeddable} = require('./modules/youtubeIsEmbeddable');
-const {youtubeIsEmbeddableHtml} = require('./modules/youtubeIsEmbeddableHtml');
+const {youtubeIsEmbeddable2023} = require('./modules/youtubeIsEmbeddable2023');
+//const {youtubeIsEmbeddable} = require('./modules/youtubeIsEmbeddable');
+//const {youtubeIsEmbeddableHtml} = require('./modules/youtubeIsEmbeddableHtml');
 const {listenOnKeyControlC} = require('./modules/controlC');
 
 const express = require('express')
@@ -27,8 +28,9 @@ app.get('/', screenshot)
 app.get('/heise', heise);
 app.get('/terraMystica', terraMystica);
 app.get('/youtubeSubtitles', youtubeSubtitles);
-app.get('/youtubeIsEmbeddable', youtubeIsEmbeddable);
-app.get('/youtubeIsEmbeddableHtml', youtubeIsEmbeddableHtml);
+app.get('/youtubeIsEmbeddable', youtubeIsEmbeddable2023);
+//app.get('/youtubeIsEmbeddable', youtubeIsEmbeddable);
+//app.get('/youtubeIsEmbeddableHtml', youtubeIsEmbeddableHtml);
 app.get('/cropFm', cropFm);
 app.get('/metaTags', metaTags);
 app.get('/readability', readability);
