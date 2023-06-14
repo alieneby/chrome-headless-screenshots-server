@@ -36,6 +36,6 @@ ENV PATH="/usr/src/app:${PATH}"
 ENV DBUS_SESSION_BUS_ADDRESS=/dev/null
 
 EXPOSE 3000
-CMD [ "start.sh" ]
+CMD [ "./start.sh" ]
 #CMD [ "node", "server.js" ]
 #ENTRYPOINT ["entrypoint.sh"]
