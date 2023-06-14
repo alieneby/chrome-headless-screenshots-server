@@ -2,6 +2,7 @@ FROM alpine:3.18
 
 # Installs latest Chromium package.
 RUN apk add --no-cache \
+      dbus \
       chromium \
       nss \
       alsa-lib \
@@ -31,7 +32,10 @@ RUN chmod +x take-screenshot.sh
 RUN chmod +x entrypoint.sh
 
 ENV PATH="/usr/src/app:${PATH}"
-EXPOSE 3000
+ENV DBUS_SESSION_BUS_ADDRESS=/dev/null
 
-CMD [ "node", "server.js" ]
+EXPOSE 3000
+RUN chmod +x /usr/src/app/start.sh
+CMD [ "/usr/src/app/start.sh" ]
+#CMD [ "node", "server.js" ]
 #ENTRYPOINT ["entrypoint.sh"]

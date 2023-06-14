@@ -1,11 +1,9 @@
 const delay = require('delay');
 const puppeteer = require('puppeteer');
 
-
-
 async function runBrowser( argv ) {
     console.log("module runBrowser.js ", argv)
-
+    process.env.LD_DEBUG = 'all';
     const browser = await puppeteer.launch({
         defaultViewport: {
             width: 300,
