@@ -1,18 +1,18 @@
 const https = require('https');
 
 const youtubeScreenshot = async (req, res) => {
-    console.log('youtubeIsEmbeddable URL: ', req.query?.url || 'url missing!' );
+    console.log('youtubeScreenshot URL: ', req.query?.url || 'url missing!' );
     if ( ! req.query?.url ) {
-        console.error('youtubeIsEmbeddable URL missing!' );
+        console.error('youtubeScreenshot URL missing!' );
         res.send('');
         return;
     }
 
     let ytId = req.query.url.replace( /^.*=/, '' );
-    console.log('youtubeIsEmbeddable ytId: ', ytId);
+    console.log('youtubeScreenshot ytId: ', ytId);
 
     if ( ! ytId ||  ytId == req.query.url) {
-        console.error('youtubeIsEmbeddable watch?v=ID missing!' );
+        console.error('youtubeScreenshot watch?v=ID missing!' );
         res.send('');
         return;
     } 

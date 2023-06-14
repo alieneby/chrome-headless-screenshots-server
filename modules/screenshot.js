@@ -74,6 +74,7 @@ async function takeScreenshot(argv) {
         headless: 'new',
         args: [
             '--no-sandbox',
+            '--disable-extensions',
             '--disable-gpu',
             '--disable-dev-shm-usage',
             '--remote-debugging-port=9222',
