@@ -1,17 +1,18 @@
-FROM alpine:3.18
+FROM zenika/alpine-chrome:with-puppeteer
+#alpine:3.18
 
 # Installs latest Chromium package.
-RUN apk add --no-cache \
-      chromium \
-      nss \
-      alsa-lib \
-      xdg-utils \
-      freetype \
-      harfbuzz \
-      ca-certificates \
-      ttf-freefont \
-      nodejs \
-      yarn
+#RUN apk add --no-cache \
+#      chromium \
+#      nss \
+#      alsa-lib \
+#      xdg-utils \
+#      freetype \
+#      harfbuzz \
+#      ca-certificates \
+#      ttf-freefont \
+#      nodejs \
+#      yarn
 
 # Tell Puppeteer to skip installing Chrome. We'll be using the installed package.
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD 1
