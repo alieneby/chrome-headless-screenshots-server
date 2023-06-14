@@ -15,6 +15,8 @@ RUN apk add --no-cache \
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
     PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
+ENV LIBGL_ALWAYS_SOFTWARE=1
+
 # Copy current directory to /usr/src/app
 ADD . /usr/src/app
 
