@@ -30,12 +30,12 @@ RUN mkdir -p /usr/src/app/out
 
 RUN chmod +x take-screenshot.sh
 RUN chmod +x entrypoint.sh
+RUN chmod +x start.sh
 
 ENV PATH="/usr/src/app:${PATH}"
 ENV DBUS_SESSION_BUS_ADDRESS=/dev/null
 
 EXPOSE 3000
-RUN chmod +x /usr/src/app/start.sh
-CMD [ "/usr/src/app/start.sh" ]
+CMD [ "start.sh" ]
 #CMD [ "node", "server.js" ]
 #ENTRYPOINT ["entrypoint.sh"]
