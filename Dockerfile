@@ -28,6 +28,9 @@ RUN yarn install
 # Create output directory
 RUN mkdir -p /usr/src/app/out
 
+# Create dbus directory
+RUN mkdir -p /var/run/dbus
+
 RUN chmod +x take-screenshot.sh
 RUN chmod +x entrypoint.sh
 RUN chmod +x start.sh
