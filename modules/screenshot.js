@@ -73,7 +73,7 @@ async function takeScreenshot(argv) {
         bindAddress: '0.0.0.0',
         headless: 'new',
         args: [
-            //'--no-sandbox',
+            '--no-sandbox',
             '--use-gl=swiftshader',
             '--disable-extensions',
             '--disable-gpu',
