@@ -21,6 +21,7 @@ async function runBrowser( argv ) {
             '--remote-debugging-port=9222',
             '--remote-debugging-address=0.0.0.0',
         ],
+        userDataDir: '/home/myuser/.config/google-chrome',
     });
 
     const page = await browser.newPage();
@@ -35,7 +36,7 @@ async function runBrowser( argv ) {
         
         let timeout
             = ( argv.timeout && Number.isInteger(argv.timeout) && argv.timeout < 60000 )  
-            ?  argv.timeout 
+            ?  argv.timeout
             : 10000;
 
         let gotoParams = { waitUntil: waitUntil, timeout: timeout };

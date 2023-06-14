@@ -81,6 +81,7 @@ async function takeScreenshot(argv) {
             '--remote-debugging-port=9222',
             '--remote-debugging-address=0.0.0.0',
         ],
+        userDataDir: '/home/myuser/.config/google-chrome',
     });
 
     const page = await browser.newPage();
