@@ -73,7 +73,7 @@ async function takeScreenshot(argv) {
         bindAddress: '0.0.0.0',
         headless: 'new',
         args: [
-            //'--no-sandbox',
+            '--no-sandbox',
             '--disable-setuid-sandbox',
             '--disable-vulkan',
             '--use-gl=swiftshader',
@@ -83,7 +83,7 @@ async function takeScreenshot(argv) {
             '--remote-debugging-port=9222',
             '--remote-debugging-address=0.0.0.0',
         ],
-        userDataDir: '/home/myuser/.config/google-chrome',
+        //userDataDir: '/home/myuser/.config/google-chrome',
     });
 
     const page = await browser.newPage();

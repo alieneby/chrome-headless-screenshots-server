@@ -14,14 +14,14 @@ async function runBrowser( argv ) {
         headless: 'new',
         args: [
             '--no-sandbox',
-            // '--disable-setuid-sandbox',
+            '--disable-setuid-sandbox',
             '--disable-vulkan',
             '--use-gl=swiftshader',
             '--disable-gpu',
             '--disable-extensions',
             '--disable-dev-shm-usage',
-            //'--remote-debugging-port=9222',
-            //'--remote-debugging-address=0.0.0.0',
+            '--remote-debugging-port=9222',
+            '--remote-debugging-address=0.0.0.0',
         ],
         //userDataDir: '/home/myuser/.config/google-chrome',
     });
