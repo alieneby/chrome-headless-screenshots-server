@@ -74,6 +74,7 @@ async function takeScreenshot(argv) {
         headless: 'new',
         args: [
             //'--no-sandbox',
+            '--disable-vulkan',
             '--use-gl=swiftshader',
             '--disable-extensions',
             '--disable-gpu',

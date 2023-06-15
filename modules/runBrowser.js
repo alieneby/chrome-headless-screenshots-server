@@ -14,6 +14,7 @@ async function runBrowser( argv ) {
         headless: 'new',
         args: [
             //'--no-sandbox',
+            '--disable-vulkan',
             '--use-gl=swiftshader',
             '--disable-gpu',
             '--disable-extensions',
