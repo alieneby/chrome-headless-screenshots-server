@@ -13,7 +13,7 @@ async function runBrowser( argv ) {
         bindAddress: '0.0.0.0',
         headless: 'new',
         args: [
-            '--no-sandbox',
+            //'--no-sandbox',
             '--use-gl=swiftshader',
             '--disable-gpu',
             '--disable-extensions',
