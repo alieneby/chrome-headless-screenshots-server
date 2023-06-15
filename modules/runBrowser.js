@@ -13,17 +13,17 @@ async function runBrowser( argv ) {
         bindAddress: '0.0.0.0',
         headless: 'new',
         args: [
-            //'--no-sandbox',
-            '--disable-setuid-sandbox',
+            '--no-sandbox',
+            // '--disable-setuid-sandbox',
             '--disable-vulkan',
             '--use-gl=swiftshader',
             '--disable-gpu',
             '--disable-extensions',
             '--disable-dev-shm-usage',
-            '--remote-debugging-port=9222',
-            '--remote-debugging-address=0.0.0.0',
+            //'--remote-debugging-port=9222',
+            //'--remote-debugging-address=0.0.0.0',
         ],
-        userDataDir: '/home/myuser/.config/google-chrome',
+        //userDataDir: '/home/myuser/.config/google-chrome',
     });
 
     const page = await browser.newPage();
