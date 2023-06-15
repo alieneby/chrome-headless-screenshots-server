@@ -38,6 +38,15 @@ RUN chmod +x start.sh
 ENV PATH="/usr/src/app:${PATH}"
 ENV DBUS_SESSION_BUS_ADDRESS=/dev/null
 
+# Create a non-root user
+RUN adduser -D myuser && echo "myuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+# Change ownership of the necessary directories and files
+RUN chown -R myuser:myuser /usr/src/app /var/run/dbus
+
+# Switch to the non-root user
+USER myuser
+
 EXPOSE 3000
 CMD [ "./start.sh" ]
 #CMD [ "node", "server.js" ]
