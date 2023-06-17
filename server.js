@@ -28,9 +28,9 @@ app.get('/screenshot/stop', async (req, res) => {
 app.get('/', async (req, res) => {
     let url = req?.query?.url || '';
     if ( url.indexOf( 'youtube' ) > 0 || url.indexOf( 'youtu.be' ) > 0 ) {
-        youtubeScreenshot(req, res);
+        await youtubeScreenshot(req, res);
     } else {
-        screenshot(req, res);
+        await screenshot(req, res);
     }
 });
 
