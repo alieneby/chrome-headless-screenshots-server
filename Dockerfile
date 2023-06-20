@@ -1,22 +1,23 @@
-FROM alpine:3.18
+FROM node:20-alpine
 
 # Installs latest Chromium package.
 RUN apk add --no-cache \
       dbus \
       chromium \
+      #nodejs \
       nss \
       alsa-lib \
       freetype \
       harfbuzz \
       ca-certificates \
       ttf-freefont \
-      nodejs \
       yarn
+
 
 # Tell Puppeteer to skip installing Chrome. We'll be using the installed package.
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD 1
 ENV PUPPETEER_EXECUTABLE_PATH /usr/bin/chromium-browser
-ENV LIBGL_ALWAYS_SOFTWARE 1
+#ENV LIBGL_ALWAYS_SOFTWARE 1
 
 # Copy current directory to /usr/src/app
 ADD . /usr/src/app

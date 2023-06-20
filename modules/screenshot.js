@@ -12,9 +12,11 @@ const screenshot = async (req, res) => {
     let width = isIntBetween(query.width, 0, 4000) || 1920;
     let height = isIntBetween(query.height, 0, 4000) || 1080;
     let delay = isIntBetween(query.delay, 0, 10000) || 5000; // milliseconds
-    let timeout = isIntBetween(query.timeout, 0, 30000) || 10000; // milliseconds
+    let timeout = isIntBetween(query.timeout, 0, 20000) || 10000; // milliseconds
     let waitUntil = query.waitUntil == 'networkidle0' ? 'networkidle0' : 'domcontentloaded';
+    
     let format = ['webp','png','jpeg'].includes(query.format) ? query.format: 'webp';
+    console.log('screenshot url: ', req.query);
 
     basename = basename.replace('https://', '')
         .replace('http://', '')
@@ -22,21 +24,30 @@ const screenshot = async (req, res) => {
 
     console.log('basename', basename);
 
-    await takeScreenshot({
-        width: width,
-        height: height,
-        delay: delay,
-        outputDir: imgDirectory,
-        filename: basename,
-        format: format,
-        waitUntil: waitUntil,
-        timeout: timeout,
-        url: query.url
-    });
+    try {
+        await takeScreenshot({
+            width: width,
+            height: height,
+            delay: delay,
+            outputDir: imgDirectory,
+            filename: basename,
+            format: format,
+            waitUntil: waitUntil,
+            timeout: timeout,
+            url: query.url
+        });
+
+    } catch(e) {
+        console.log('Error ', e);
+        res.status(500).send(e);
+        return;
+    }
 
     let absImg = imgDirectory +  '/' + basename + '.' + format;
     console.log('Image saved ', absImg)
     console.log('Send ', absImg)
+    console.log('DONE screenshot url: ', query.url);
+
     //res.send('Hello World!!!')
     res.sendFile(absImg,
         (err) => {
@@ -72,6 +83,7 @@ async function takeScreenshot(argv) {
         },
         bindAddress: '0.0.0.0',
         headless: 'new',
+        //executablePath: '/usr/bin/chromium-browser',
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
@@ -85,65 +97,68 @@ async function takeScreenshot(argv) {
         ],
         //userDataDir: '/home/myuser/.config/google-chrome',
     });
-
-    const page = await browser.newPage();
-
-    if (argv.userAgent) await page.setUserAgent(argv.userAgent);
-
-    if (argv.cookies) {
-        let cookies = JSON.parse(argv.cookies);
-        if (Array.isArray(cookies)) {
-            await page.setCookie(...cookies);
-        } else {
-            await page.setCookie(cookies);
-        }
-    }
-
-    if (argv.cookiesFile) {
-        let cookies = JSON.parse(
-            fs.readFileSync(path.join(argv.inputDir, argv.cookiesFile))
-        );
-        if (Array.isArray(cookies)) {
-            await page.setCookie(...cookies);
-        } else {
-            await page.setCookie(cookies);
-        }
-    }
-
     try {
+
+        const page = await browser.newPage();
+
+        if (argv.userAgent) await page.setUserAgent(argv.userAgent);
+
+        if (argv.cookies) {
+            let cookies = JSON.parse(argv.cookies);
+            if (Array.isArray(cookies)) {
+                await page.setCookie(...cookies);
+            } else {
+                await page.setCookie(cookies);
+            }
+        }
+
+        if (argv.cookiesFile) {
+            let cookies = JSON.parse(
+                fs.readFileSync(path.join(argv.inputDir, argv.cookiesFile))
+            );
+            if (Array.isArray(cookies)) {
+                await page.setCookie(...cookies);
+            } else {
+                await page.setCookie(cookies);
+            }
+        }
+
         // @see https://stackoverflow.com/questions/62852714/pyppeteer-wait-until-all-elements-of-page-is-loaded
-        
+
         let gotoPageParams = { 
             waitUntil:  argv.waitUntil, 
-            timeout:  argv.timeout,            
+            timeout:  argv.timeout,
         };
+
         console.log('gotoPageParams: ', gotoPageParams);
 
         await page.goto(argv.url, gotoPageParams);
 
+        if (argv.delay) {
+            let delaySec = argv.delay < 1000 ? argv.delay : argv.delay / 1000;
+            console.log('');
+            console.log('wait ' + delaySec + ' seconds');
+            await delay(delaySec * 1000);
+            console.log('wait done');
+        }
+
+        //console.log(`takeScreenshot make screenshot ${argv.filename}.${argv.format}`)
+        await page.screenshot({
+            path: path
+                .join(argv.outputDir, argv.filename + '.' + argv.format)
+                .toString(),
+            type: argv.format,
+        });
+
+        //console.log(`takeScreenshot close browser`)
+        await browser.close();
+
     } catch(e) {
         console.log('Exception page.goto() ', e);
+        await browser.close();
         return '';
     }
 
-    if (argv.delay) {       
-        let delaySec = argv.delay < 1000 ? argv.delay : argv.delay / 1000; 
-        console.log('');
-        console.log('wait ' + delaySec + ' seconds');
-        await delay(delaySec * 1000);
-        console.log('wait done');
-    }
-    
-    //console.log(`takeScreenshot make screenshot ${argv.filename}.${argv.format}`)
-    await page.screenshot({
-        path: path
-            .join(argv.outputDir, argv.filename + '.' + argv.format)
-            .toString(),
-        type: argv.format,
-    });
-
-    //console.log(`takeScreenshot close browser`)
-    await browser.close();
 }
 
 module.exports = { screenshot }
