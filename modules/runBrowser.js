@@ -88,11 +88,13 @@ async function run( argv ) {
 
 async function runBrowser( argv ) {
     const release = await mutex.acquire();
+    let returnVal = '';
     try {
-        await run( argv );
+        returnVal = await run( argv );
     } finally {
       release();
     }
+    return returnVal;
 }
 
 
