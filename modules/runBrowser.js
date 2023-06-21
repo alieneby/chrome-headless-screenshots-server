@@ -7,7 +7,9 @@ const mutex = new Mutex();
 
 async function run( argv ) {
     console.log("module runBrowser.js ", argv)
-    process.env.LD_DEBUG = 'all';
+
+    // DEBUG MODE für puppeteer
+    // process.env.LD_DEBUG = 'all';
 
     const browser = await puppeteer.launch({
         defaultViewport: {
