@@ -110,8 +110,6 @@ const metaTags = async (req, res) => {
             evalFunction: scanPage
         });
 
-        jsonModel.url = query.url;
-
         //console.log('metaTags jsonModel ', jsonModel);
 
         // header for json
