@@ -1,9 +1,14 @@
 const delay = require('delay');
 const puppeteer = require('puppeteer');
+const { Mutex } = require('async-mutex');
 
-async function runBrowser( argv ) {
+const mutex = new Mutex();
+
+
+async function run( argv ) {
     console.log("module runBrowser.js ", argv)
     process.env.LD_DEBUG = 'all';
+
     const browser = await puppeteer.launch({
         defaultViewport: {
             width: 300,
@@ -32,10 +37,10 @@ async function runBrowser( argv ) {
 
     try {
         // @see https://stackoverflow.com/questions/62852714/pyppeteer-wait-until-all-elements-of-page-is-loaded
-        let waitUntil 
+        let waitUntil
             = argv.waitUntil == 'networkidle0' ? 'networkidle0' : 'domcontentloaded';
         
-        
+
         let timeout
             = ( argv.timeout && Number.isInteger(argv.timeout) && argv.timeout < 60000 )  
             ?  argv.timeout
@@ -46,39 +51,48 @@ async function runBrowser( argv ) {
 
         await page.goto(argv.url, gotoParams);
 
+        if (argv.delay) {
+            let delaySec = argv.delay < 1000 ? argv.delay : argv.delay / 1000;
+            console.log('');
+            console.log('wait ' + delaySec + ' seconds');
+            await delay(delaySec * 1000);
+            console.log('wait done');
+        }
+
+        if (argv.jsString) {
+            console.log('adding: ' + argv.jsString);
+            const resultArticle = await page.evaluate(argv.jsString);
+            console.log('result: ' + resultArticle);
+        }
+
+        //page.on('console.log', msg => console.log(msg.text()));
+
+        let txt = '';
+        try {
+            txt = await page.evaluate( argv.evalFunction );
+        } catch( e ) {
+            console.log('Exception: ', e);
+        }
+
+        console.log('browser.txt: ', txt);
+
+        await browser.close();
+        return txt;
+
     } catch(e) {
-        console.log('Exception page.goto() ', e);
+        console.log('Exception ', e);
+        await browser.close();
         return '';
     }
+}
 
-    if (argv.delay) {       
-        let delaySec = argv.delay < 1000 ? argv.delay : argv.delay / 1000; 
-        console.log('');
-        console.log('wait ' + delaySec + ' seconds');
-        await delay(delaySec * 1000);
-        console.log('wait done');
-    }
-
-    if (argv.jsString) {       
-        console.log('adding: ' + argv.jsString);
-        const resultArticle = await page.evaluate(argv.jsString);
-        console.log('result: ' + resultArticle);
-    }
-    //page.on('console.log', msg => console.log(msg.text()));
-
-    
-    let txt = '';
+async function runBrowser( argv ) {
+    const release = await mutex.acquire();
     try {
-        txt = await page.evaluate( argv.evalFunction );
-
-    } catch( e ) {
-        console.log('Exception: ', e);
+        await run( argv );
+    } finally {
+      release();
     }
-
-    console.log('browser.txt: ', txt);
-
-    await browser.close();
-    return txt;
 }
 
 
