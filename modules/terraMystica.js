@@ -6,12 +6,12 @@ let scanFeed = _ => {
     if ( ! document ) {
         console.log('page.evaluate() no document!!!!! ' );
     }
-    
-    let arrPA = document.querySelectorAll('p[style] > a[href]');
+
+    let arrPA = document.querySelectorAll('div[data-container=content] > div > div.j-textWithImage > div  div.cc-m-textwithimage-inline-rte');
     console.log('page.evaluate() 3 ' );
 
     if ( ! arrPA ) {
-        console.log('page.evaluate() no document.querySelector(p[style] > a[href])!!!!!');
+        console.log('page.evaluate() no document.querySelector(div[data-container=content] > div > div.j-textWithImage > div  div.cc-m-textwithimage-inline-rte)!!!!!');
         console.log( document.innerText );
         return "";
     }
@@ -21,27 +21,33 @@ let scanFeed = _ => {
 
     arrPA.forEach( node => {
         console.log('page.evaluate() 6' );
+        let arrP = node.querySelectorAll('p');
+        if ( ! arrP || arrP.length < 4 ) {
+            return;
+        }
 
-        let descr = node?.parentElement?.querySelector('span.hascaption')?.innerText || '';
-        console.log('page.evaluate() node ' + ( descr ? '': ' no ' ) + ' has article');
+        let title = arrP[2].innerText;
+        let descr = arrP[3].innerText;
+        if (descr) descr = descr.replace(/ \[mehr.*\]/g, '');
+        let url = node.querySelector('a[href]')['href']
 
         arr.push({
-            url: node.href,
-            title: node.title,
+            url: url,
+            title: title,
             descr: descr
         });
 
     });
-    
+
     return JSON.stringify(arr);
 }
 
-let scanPage= _ => {  
+let scanPage= _ => {
     console.log('page.evaluate() started ' );
     if ( ! document ) {
         console.log('page.evaluate() no document!!!!! ' );
     }
-    
+
     let contentDiv = document.querySelector('#content_area');
 
     if ( ! contentDiv ) {

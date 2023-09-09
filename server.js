@@ -3,6 +3,7 @@ const delay = require('delay');
 const {screenshot} = require('./modules/screenshot');
 const {heise} = require('./modules/heise');
 const {terraMystica} = require('./modules/terraMystica');
+const {greyhunter} = require('./modules/greyhunter');
 const {cropFm} = require('./modules/cropFm');
 const {metaTags} = require('./modules/metaTags');
 const {readability} = require('./modules/readability');
@@ -100,6 +101,7 @@ app.get('/youtubeIsEmbeddable', youtubeIsEmbeddable2023);
 //app.get('/youtubeIsEmbeddable', youtubeIsEmbeddable);
 //app.get('/youtubeIsEmbeddableHtml', youtubeIsEmbeddableHtml);
 app.get('/cropFm', cropFm);
+app.get('/greyhunter', greyhunter); // ufoscriptorium.blogspot.com
 app.get('/metaTags', metaTags);
 app.get('/readability', readability);
 app.get('/web', readability);
